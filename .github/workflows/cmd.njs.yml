@@ -1,0 +1,22 @@
+name: SkunkPlatform CLI Builder
+
+on: [push]
+
+jobs:
+  build:
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js v24
+        uses: actions/setup-node@v4
+        with:
+          node-version: 24
+
+      - name: Install dependencies
+        run: npm install postject
+
+      - name: Build Executable
+        run: node skunkbuilder/building.js
