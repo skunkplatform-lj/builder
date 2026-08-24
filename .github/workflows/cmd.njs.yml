@@ -4,7 +4,23 @@ on: [push]
 
 jobs:
   build:
-    runs-on: windows-latest
+    name: Build (${{ matrix.platform }})
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        include:
+          - platform: win64
+            os: windows-latest
+            exec_path: build/examplecli.exe
+            artifact_name: examplecli-win64.exe
+          - platform: linux64
+            os: ubuntu-latest
+            exec_path: build/examplecli
+            artifact_name: examplecli-linux64
+          - platform: macos64
+            os: macos-latest
+            exec_path: build/examplecli
+            artifact_name: examplecli-macos64
 
     steps:
       - name: Checkout repository
@@ -21,9 +37,10 @@ jobs:
       - name: Build Executable
         run: node skunkbuilder/building.js
 
-      - name: Upload Temporary Build Artifact
+      - name: Upload Build Artifact
+        if: hashFiles(matrix.exec_path) != ''
         uses: actions/upload-artifact@v4
         with:
-          name: SkunkPlatform-CLI-Win64
-          path: build/*.exe
+          name: ${{ matrix.artifact_name }}
+          path: ${{ matrix.exec_path }}
           retention-days: 1
