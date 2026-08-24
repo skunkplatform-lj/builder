@@ -1,8 +1,9 @@
 module.exports = {
   buildDir: "build",
   version: "1.0.0",
-  package: "com.my.project1",
+  package: "com.skunkplatform.finescript.cli",
   name: "Example CLI",
   appname: "examplecli",
-  mainScript: "main.js"
+  mainScript: "main.js",
+  platforms: ["win64", "linux64", "macos64"]
 };
